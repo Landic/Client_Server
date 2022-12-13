@@ -1,0 +1,7 @@
+﻿  main.cpp
+C:\Users\User\Desktop\Volkov_HW_44_Client_Server\Volkov_HW_44_Server\Volkov_HW_44_Server\main.cpp(5,9): error C2664: 'INT_PTR DialogBoxParamW(HINSTANCE,LPCWSTR,HWND,DLGPROC,LPARAM)': cannot convert argument 4 from 'BOOL (__cdecl *)(HWND,UINT,WPARAM,LPARAM)' to 'DLGPROC'
+C:\Users\User\Desktop\Volkov_HW_44_Client_Server\Volkov_HW_44_Server\Volkov_HW_44_Server\main.cpp(5,9): message : None of the functions with this name in scope match the target type
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\winuser.h(5065,1): message : see declaration of 'DialogBoxParamW'
+  ServerDLG.cpp
+C:\Users\User\Desktop\Volkov_HW_44_Client_Server\Volkov_HW_44_Server\Volkov_HW_44_Server\ServerDLG.cpp(89,54): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+  Generating Code...
