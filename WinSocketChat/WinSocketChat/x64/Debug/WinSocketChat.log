@@ -1,0 +1,5 @@
+﻿  Socket.cpp
+C:\Users\User\Desktop\WinSocketChat\WinSocketChat\Socket.cpp(38,40): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+  Source.cpp
+  Generating Code...
+  WinSocketChat.vcxproj -> C:\Users\User\Desktop\WinSocketChat\x64\Debug\WinSocketChat.exe
