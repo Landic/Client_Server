@@ -1,1 +1,8 @@
-﻿  UDPExample.vcxproj -> C:\Users\User\Desktop\Client_Server_Programming\UDPMulticast\x64\Debug\UDPListener.exe
+﻿  Server.cpp
+C:\Users\User\Desktop\Client_Server_Programming\UDPMulticast\UDPExample\Server.cpp(97,62): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\User\Desktop\Client_Server_Programming\UDPMulticast\UDPExample\Server.cpp(101,11): warning C4477: 'printf' : format string '%d' requires an argument of type 'int', but variadic argument 1 has type 'SOCKET'
+C:\Users\User\Desktop\Client_Server_Programming\UDPMulticast\UDPExample\Server.cpp(101,11): message : consider using '%lld' in the format string
+C:\Users\User\Desktop\Client_Server_Programming\UDPMulticast\UDPExample\Server.cpp(101,11): message : consider using '%Id' in the format string
+C:\Users\User\Desktop\Client_Server_Programming\UDPMulticast\UDPExample\Server.cpp(101,11): message : consider using '%I64d' in the format string
+C:\Users\User\Desktop\Client_Server_Programming\UDPMulticast\UDPExample\Server.cpp(131,71): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+  UDPExample.vcxproj -> C:\Users\User\Desktop\Client_Server_Programming\UDPMulticast\x64\Debug\UDPListener.exe

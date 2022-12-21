@@ -1,22 +1,24 @@
-#include <winsock2.h>
+п»ї#include <winsock2.h>
 #include <iostream>
 #include <vector>
 #include <string>
+#include <map>
 using namespace std;
 
 #define MAX_CLIENTS 10
 #define DEFAULT_BUFLEN 4096
 
 #pragma comment(lib, "ws2_32.lib") // Winsock library
-#pragma warning(disable:4996) // отключаем предупреждение _WINSOCK_DEPRECATED_NO_WARNINGS
+#pragma warning(disable:4996) // РѕС‚РєР»СЋС‡Р°РµРј РїСЂРµРґСѓРїСЂРµР¶РґРµРЅРёРµ _WINSOCK_DEPRECATED_NO_WARNINGS
 
 SOCKET server_socket;
 
 vector<string> history;
+vector<string> names;
 
 int main() {
 	system("title Server");
-
+	map<SOCKET, string> client_ip;
 	puts("Start server... DONE.");
 	WSADATA wsa;
 	if (WSAStartup(MAKEWORD(2, 2), &wsa) != 0) {
@@ -45,26 +47,26 @@ int main() {
 
 	// puts("Bind socket... DONE.");
 
-	// слушать входящие соединения
+	// СЃР»СѓС€Р°С‚СЊ РІС…РѕРґСЏС‰РёРµ СЃРѕРµРґРёРЅРµРЅРёСЏ
 	listen(server_socket, MAX_CLIENTS);
 
-	// принять и входящее соединение
+	// РїСЂРёРЅСЏС‚СЊ Рё РІС…РѕРґСЏС‰РµРµ СЃРѕРµРґРёРЅРµРЅРёРµ
 	puts("Server is waiting for incoming connections...\nPlease, start one or more client-side app.");
 
-	// размер нашего приемного буфера, это длина строки
-	// набор дескрипторов сокетов
+	// СЂР°Р·РјРµСЂ РЅР°С€РµРіРѕ РїСЂРёРµРјРЅРѕРіРѕ Р±СѓС„РµСЂР°, СЌС‚Рѕ РґР»РёРЅР° СЃС‚СЂРѕРєРё
+	// РЅР°Р±РѕСЂ РґРµСЃРєСЂРёРїС‚РѕСЂРѕРІ СЃРѕРєРµС‚РѕРІ
 	// fd means "file descriptors"
 	fd_set readfds; // https://docs.microsoft.com/en-us/windows/win32/api/winsock/ns-winsock-fd_set
 	SOCKET client_socket[MAX_CLIENTS] = {};
 
 	while (true) {
-		// очистить сокет fdset
+		// РѕС‡РёСЃС‚РёС‚СЊ СЃРѕРєРµС‚ fdset
 		FD_ZERO(&readfds);
 
-		// добавить главный сокет в fdset
+		// РґРѕР±Р°РІРёС‚СЊ РіР»Р°РІРЅС‹Р№ СЃРѕРєРµС‚ РІ fdset
 		FD_SET(server_socket, &readfds);
 
-		// добавить дочерние сокеты в fdset
+		// РґРѕР±Р°РІРёС‚СЊ РґРѕС‡РµСЂРЅРёРµ СЃРѕРєРµС‚С‹ РІ fdset
 		for (int i = 0; i < MAX_CLIENTS; i++) 
 		{
 			SOCKET s = client_socket[i];
@@ -73,14 +75,14 @@ int main() {
 			}
 		}
 
-		// дождитесь активности на любом из сокетов, тайм-аут равен NULL, поэтому ждите бесконечно
+		// РґРѕР¶РґРёС‚РµСЃСЊ Р°РєС‚РёРІРЅРѕСЃС‚Рё РЅР° Р»СЋР±РѕРј РёР· СЃРѕРєРµС‚РѕРІ, С‚Р°Р№Рј-Р°СѓС‚ СЂР°РІРµРЅ NULL, РїРѕСЌС‚РѕРјСѓ Р¶РґРёС‚Рµ Р±РµСЃРєРѕРЅРµС‡РЅРѕ
 		if (select(0, &readfds, NULL, NULL, NULL) == SOCKET_ERROR) {
 			printf("select function call failed with error code : %d", WSAGetLastError());
 			return 4;
 		}
 
-		// если что-то произошло на мастер-сокете, то это входящее соединение
-		SOCKET new_socket; // новый клиентский сокет
+		// РµСЃР»Рё С‡С‚Рѕ-С‚Рѕ РїСЂРѕРёР·РѕС€Р»Рѕ РЅР° РјР°СЃС‚РµСЂ-СЃРѕРєРµС‚Рµ, С‚Рѕ СЌС‚Рѕ РІС…РѕРґСЏС‰РµРµ СЃРѕРµРґРёРЅРµРЅРёРµ
+		SOCKET new_socket; // РЅРѕРІС‹Р№ РєР»РёРµРЅС‚СЃРєРёР№ СЃРѕРєРµС‚
 		sockaddr_in address;
 		int addrlen = sizeof(sockaddr_in);
 		if (FD_ISSET(server_socket, &readfds)) {
@@ -95,10 +97,10 @@ int main() {
 				send(new_socket, history[i].c_str(), history[i].size(), 0);
 			}
 
-			// информировать серверную сторону о номере сокета - используется в командах отправки и получения
+			// РёРЅС„РѕСЂРјРёСЂРѕРІР°С‚СЊ СЃРµСЂРІРµСЂРЅСѓСЋ СЃС‚РѕСЂРѕРЅСѓ Рѕ РЅРѕРјРµСЂРµ СЃРѕРєРµС‚Р° - РёСЃРїРѕР»СЊР·СѓРµС‚СЃСЏ РІ РєРѕРјР°РЅРґР°С… РѕС‚РїСЂР°РІРєРё Рё РїРѕР»СѓС‡РµРЅРёСЏ
 			printf("New connection, socket fd is %d, ip is: %s, port: %d\n", new_socket, inet_ntoa(address.sin_addr), ntohs(address.sin_port));
 
-			// добавить новый сокет в массив сокетов
+			// РґРѕР±Р°РІРёС‚СЊ РЅРѕРІС‹Р№ СЃРѕРєРµС‚ РІ РјР°СЃСЃРёРІ СЃРѕРєРµС‚РѕРІ
 			for (int i = 0; i < MAX_CLIENTS; i++) {
 				if (client_socket[i] == 0) {
 					client_socket[i] = new_socket;
@@ -108,18 +110,30 @@ int main() {
 			}
 		}
 
-		// если какой-то из клиентских сокетов отправляет что-то
+		// РµСЃР»Рё РєР°РєРѕР№-С‚Рѕ РёР· РєР»РёРµРЅС‚СЃРєРёС… СЃРѕРєРµС‚РѕРІ РѕС‚РїСЂР°РІР»СЏРµС‚ С‡С‚Рѕ-С‚Рѕ
 		for (int i = 0; i < MAX_CLIENTS; i++)
 		{
 			SOCKET s = client_socket[i];
-			// если клиент присутствует в сокетах чтения
+			// РµСЃР»Рё РєР»РёРµРЅС‚ РїСЂРёСЃСѓС‚СЃС‚РІСѓРµС‚ РІ СЃРѕРєРµС‚Р°С… С‡С‚РµРЅРёСЏ
 			if (FD_ISSET(s, &readfds))
 			{
-				// получить реквизиты клиента
+				// РїРѕР»СѓС‡РёС‚СЊ СЂРµРєРІРёР·РёС‚С‹ РєР»РёРµРЅС‚Р°
 				getpeername(s, (sockaddr*)&address, (int*)&addrlen);
-
-				// проверьте, было ли оно на закрытие, а также прочитайте входящее сообщение
-				// recv не помещает нулевой терминатор в конец строки (в то время как printf %s предполагает, что он есть)
+				if (names.size() <= i)
+				{
+					char client_name[DEFAULT_BUFLEN];
+					int client_message_length = recv(s, client_name, DEFAULT_BUFLEN, 0);
+					client_name[client_message_length] = '\0';
+					names.push_back(client_name);
+					string new_client =  names[i] + " is joined to the chat.";
+					for (int i = 0; i < MAX_CLIENTS; i++) {
+						if (client_socket[i] != 0) {
+							send(client_socket[i], new_client.c_str(), new_client.size(), 0);
+						}
+					}
+				}
+				// РїСЂРѕРІРµСЂСЊС‚Рµ, Р±С‹Р»Рѕ Р»Рё РѕРЅРѕ РЅР° Р·Р°РєСЂС‹С‚РёРµ, Р° С‚Р°РєР¶Рµ РїСЂРѕС‡РёС‚Р°Р№С‚Рµ РІС…РѕРґСЏС‰РµРµ СЃРѕРѕР±С‰РµРЅРёРµ
+				// recv РЅРµ РїРѕРјРµС‰Р°РµС‚ РЅСѓР»РµРІРѕР№ С‚РµСЂРјРёРЅР°С‚РѕСЂ РІ РєРѕРЅРµС† СЃС‚СЂРѕРєРё (РІ С‚Рѕ РІСЂРµРјСЏ РєР°Рє printf %s РїСЂРµРґРїРѕР»Р°РіР°РµС‚, С‡С‚Рѕ РѕРЅ РµСЃС‚СЊ)
 
 				char client_message[DEFAULT_BUFLEN];
 
