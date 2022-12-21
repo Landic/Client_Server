@@ -16,20 +16,23 @@ using namespace std;
 
 SOCKET client_socket;
 string nickname; // str for nickname
+string color;
+HANDLE hColor;
 
 DWORD WINAPI Sender(void* param)
 {
     while (true) {
         // cout << "Please insert your query for server: ";
-        char query[DEFAULT_BUFLEN];
-        cin.getline(query, DEFAULT_BUFLEN);
-        nickname += query; // add a string and pass it
-        send(client_socket, nickname.c_str(), nickname.size(), 0);
+        //char query[DEFAULT_BUFLEN];
+        //cin.getline(query, DEFAULT_BUFLEN);
+        //nickname += query; // add a string and pass it
+        //send(client_socket, nickname.c_str(), nickname.size(), 0);
 
         // альтернативный вариант ввода данных стрингом
-        // string query;
-        // getline(cin, query);
-        // send(client_socket, query.c_str(), query.size(), 0);
+         string query, mes;
+         getline(cin, query);
+         mes = color + nickname + query;
+         send(client_socket, mes.c_str(), mes.size(), 0);
     }
 }
 
@@ -39,10 +42,28 @@ DWORD WINAPI Receiver(void* param)
         char response[DEFAULT_BUFLEN];
         int result = recv(client_socket, response, DEFAULT_BUFLEN, 0);
         response[result] = '\0';
-
-        // cout << "...\nYou have new response from server: " << response << "\n";
-        cout << response << "\n";
-        // cout << "Please insert your query for server: ";
+        switch (response[0]) {
+        case '1':
+            SetConsoleTextAttribute(hColor, 1);
+            break;
+        case '2':
+            SetConsoleTextAttribute(hColor, 2);
+            break;
+        case '3':
+            SetConsoleTextAttribute(hColor, 3);
+            break;
+        case '4':
+            SetConsoleTextAttribute(hColor, 4);
+            break;
+        case '5':
+            SetConsoleTextAttribute(hColor, 5);
+            break;
+        case '6':
+            SetConsoleTextAttribute(hColor, 6);
+            break;
+        }
+        cout << &(response[1]) << "\n";
+        SetConsoleTextAttribute(hColor, 7);
     }
 }
 
@@ -66,6 +87,7 @@ int main()
     //SetConsoleCtrlHandler((PHANDLER_ROUTINE)ExitHandler, true);
 
     system("title Client");
+    hColor = GetStdHandle(STD_OUTPUT_HANDLE);
     // initialize Winsock
     WSADATA wsaData;
     int iResult = WSAStartup(MAKEWORD(2, 2), &wsaData);
@@ -119,7 +141,9 @@ int main()
     cout << "Enter your nickname -> ";
     cin >> nickname; // enter nickname
     nickname += " -> "; // add ->
-
+    cout << "Color: \n1. Blue\n2. Green\n3. Red\n4. Purple\n5. Yellow\n6. Gray" << endl;
+    cout << "Enter -> ";
+    cin >> color;
 
 
 

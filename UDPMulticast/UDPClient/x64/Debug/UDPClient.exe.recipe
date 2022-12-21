@@ -2,7 +2,7 @@
 <Project>
   <ProjectOutputs>
     <ProjectOutput>
-      <FullPath>C:\Users\User\Desktop\UDPMulticast\x64\Debug\UDPClient.exe</FullPath>
+      <FullPath>C:\Users\User\Desktop\Client_Server_Programming\UDPMulticast\x64\Debug\UDPClient.exe</FullPath>
     </ProjectOutput>
   </ProjectOutputs>
   <ContentFiles />
