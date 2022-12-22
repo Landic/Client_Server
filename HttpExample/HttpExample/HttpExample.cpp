@@ -65,8 +65,12 @@ int main()
     }
 
     //4. HTTP Request
-
-    string uri = "/data/2.5/weather?q=Odessa&appid=75f6e64d49db78658d09cb5ab201e483&mode=JSON";
+    string city;
+    cout << "Enter city" << endl;
+    cout << "Enter: ";
+    cin >> city;
+    system("cls");
+    string uri = "/data/2.5/weather?q="+city+"&appid=75f6e64d49db78658d09cb5ab201e483&mode=JSON";
 
     string request = "GET " + uri + " HTTP/1.1\n"; 
     request += "Host: " + string(hostname) + "\n";
@@ -108,19 +112,123 @@ int main()
     } while (respLength == BUFFERSIZE);
 
     cout << response << endl;
-    string count;
+    string str;
     cout << endl << endl;
-    string finds[8] = { "\"id\":800", "\"name\":\"Odessa\"", "\"country\":\"UA\"", "\"coord\":{\"lon\":30.7326,\"lat\":46.4775}","\"temp_min\":273.19", "\"temp_max\":273.19", "\"sunrise\":1671428200", "\"sunset\":1671459086" };
-    for (short i = 0; i < 8; i++) {
-        size_t found[8] = { response.find(finds[i]) };
-        if (found[i] != string::npos) {
-            count += finds[i] + "\n";
-        }
-        else {
-            count += "Не найдено\n";
-        }
+    int pos;
+    str += "ID -> ";
+    pos = response.find("id");
+    for (int i = pos + 4; response[i] != ','; i++)
+    {
+        str += response[i];
     }
-    cout << count << endl;
+    str += "\n";
+
+
+
+
+    str += "Country -> ";
+    pos = response.find("country");
+    for (int i = pos + 10; response[i] != '\"'; i++)
+    {
+        str += response[i];
+    }
+    str += "\n";
+
+
+
+
+    str += "City -> ";
+    pos = response.find("name");
+    for (int i = pos + 7; response[i] != '\"'; i++)
+    {
+        str += response[i];
+    }
+    str += "\n";
+
+
+    str += "Coordinate -> ";
+    str += "X: ";
+    pos = response.find("lon");
+    for (int i = pos + 5; response[i] != ','; i++)
+    {
+        str += response[i];
+    }
+    str += "\t";
+
+
+
+    str += "Y: ";
+    pos = response.find("lat");
+    for (int i = pos + 5; response[i] != '}'; i++)
+    {
+        str += response[i];
+    }
+    str += "\n";
+
+
+    string buffer;
+    double temp;
+    str += "Temp -> ";
+    pos = response.find("temp");
+    for (int i = pos+6; response[i] != ','; i++)
+    {
+        buffer += response[i];
+    }
+    temp = atof(buffer.c_str());
+    temp -= 273.15;
+    buffer += temp;
+    str += buffer;
+    str += "\n";
+
+
+
+    str += "Temp min max: min-> ";
+    pos = response.find("temp_min");
+    for (int i = pos; response[i] != ','; i++)
+    {
+        buffer += response[i];
+    }
+    temp = atof(buffer.c_str());
+    temp -= 273.15;
+    buffer += temp;
+    str += buffer;
+    str += "\n";
+    str += "max-> ";
+    pos = response.find("temp_max");
+    for (int i = pos; response[i] != ','; i++)
+    {
+        buffer += response[i];
+    }
+    temp = atof(buffer.c_str());
+    temp -= 273.15;
+    buffer += temp;
+    str += buffer;
+    str += "\n";
+
+
+    str += "Sunrise -> ";
+    pos = response.find("sunrise");
+    for (int i = pos; response[i] != ','; i++)
+    {
+        str += response[i];
+    }
+    str += "\n";
+
+
+
+    str += "Sunset -> ";
+    pos = response.find("sunset");
+    for (int i = pos; response[i] != '}'; i++)
+    {
+        str += response[i];
+    }
+    str += "\n";
+
+
+
+
+
+    cout << str << endl;
     //отключает отправку и получение сообщений сокетом
     iResult = shutdown(connectSocket, SD_BOTH);
     if (iResult == SOCKET_ERROR) {
