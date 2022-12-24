@@ -225,9 +225,15 @@ int main()
     str += "\n";
 
 
+    fstream file("save.txt", ios::app);
 
-
-
+    if (file.is_open()) {
+        file << str;
+    }
+    else {
+        cout << "file does not open" << endl;
+    }
+    file.close();
     cout << str << endl;
     //отключает отправку и получение сообщений сокетом
     iResult = shutdown(connectSocket, SD_BOTH);

@@ -12,7 +12,17 @@ C:\Users\User\Desktop\Client_Server_Programming\HttpExample\HttpExample\HttpExam
               _Elem=char
           ]
 C:\Users\User\Desktop\Client_Server_Programming\HttpExample\HttpExample\HttpExample.cpp(186,36): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-C:\Users\User\Desktop\Client_Server_Programming\HttpExample\HttpExample\HttpExample.cpp(193,36): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-C:\Users\User\Desktop\Client_Server_Programming\HttpExample\HttpExample\HttpExample.cpp(202,35): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-C:\Users\User\Desktop\Client_Server_Programming\HttpExample\HttpExample\HttpExample.cpp(212,34): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\User\Desktop\Client_Server_Programming\HttpExample\HttpExample\HttpExample.cpp(193,15): warning C4244: 'argument': conversion from 'double' to '_Elem', possible loss of data
+          with
+          [
+              _Elem=char
+          ]
+C:\Users\User\Desktop\Client_Server_Programming\HttpExample\HttpExample\HttpExample.cpp(197,36): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\User\Desktop\Client_Server_Programming\HttpExample\HttpExample\HttpExample.cpp(204,15): warning C4244: 'argument': conversion from 'double' to '_Elem', possible loss of data
+          with
+          [
+              _Elem=char
+          ]
+C:\Users\User\Desktop\Client_Server_Programming\HttpExample\HttpExample\HttpExample.cpp(210,35): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\User\Desktop\Client_Server_Programming\HttpExample\HttpExample\HttpExample.cpp(220,34): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
   HttpExample.vcxproj -> C:\Users\User\Desktop\Client_Server_Programming\HttpExample\x64\Debug\HttpExample.exe
