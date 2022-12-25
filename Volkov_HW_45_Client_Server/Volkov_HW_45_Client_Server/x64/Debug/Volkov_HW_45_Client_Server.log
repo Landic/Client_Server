@@ -1,0 +1,3 @@
+﻿  main.cpp
+C:\Users\User\Desktop\Volkov_HW_45_Client_Server\Volkov_HW_45_Client_Server\main.cpp(25,38): warning C4267: 'initializing': conversion from 'size_t' to 'short', possible loss of data
+  Volkov_HW_45_Client_Server.vcxproj -> C:\Users\User\Desktop\Volkov_HW_45_Client_Server\x64\Debug\Volkov_HW_45_Client_Server.exe
